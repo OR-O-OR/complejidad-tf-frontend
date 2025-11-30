@@ -8,5 +8,10 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('centralidad-app');
+  protected readonly title = signal('Centralidad App');
+  protected readonly showIntro = signal(true);
+
+  enterApp(): void {
+    this.showIntro.set(false);
+  }
 }

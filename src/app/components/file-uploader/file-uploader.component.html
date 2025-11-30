@@ -1,0 +1,17 @@
+<div class="file-uploader-container">
+  <input 
+    type="file" 
+    id="file-input" 
+    (change)="onFileSelected($event)" 
+    accept=".gml,.csv,.txt"
+    style="display: none;"
+  />
+  <button mat-raised-button color="primary" (click)="triggerFileInput()">
+    <mat-icon>cloud_upload</mat-icon>
+    Seleccionar Archivo
+  </button>
+  <div *ngIf="fileName" class="file-name">
+    Archivo seleccionado: {{ fileName }}
+  </div>
+</div>
+

@@ -1,0 +1,36 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h1 class="page-title">Resultados del Análisis</h1>
+  
+  <div class="results-grid">
+    <div class="table-section">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Top 10 Nodos Centrales</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <app-top-nodes-table></app-top-nodes-table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    
+    <div class="graph-section">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Visualización del Grafo</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <app-graph-preview></app-graph-preview>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  
+  <div class="export-section">
+    <button mat-raised-button color="primary" (click)="exportCSV()">
+      Exportar CSV
+    </button>
+  </div>
+</div>
+

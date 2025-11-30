@@ -1,0 +1,40 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <mat-card class="upload-card">
+    <mat-card-header>
+      <mat-card-title>Cargar Dataset</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="upload-section">
+        <app-file-uploader></app-file-uploader>
+      </div>
+      
+      <div class="config-section">
+        <mat-form-field appearance="outline">
+          <mat-label>Número de nodos</mat-label>
+          <input 
+            matInput 
+            type="number" 
+            [(ngModel)]="nodeCount" 
+            [max]="maxNodes"
+            [min]="1"
+            placeholder="Ingrese número de nodos"
+          />
+          <mat-hint>Máximo: {{ maxNodes }} nodos</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        class="generate-button"
+        routerLink="/config"
+      >
+        Generar Subgrafo
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+

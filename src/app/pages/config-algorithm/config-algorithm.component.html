@@ -1,0 +1,28 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h1 class="page-title">Seleccionar Algoritmo</h1>
+  
+  <div class="algorithms-grid">
+    <mat-card *ngFor="let algorithm of algorithms" class="algorithm-card">
+      <mat-card-header>
+        <mat-card-title>{{ algorithm.name }}</mat-card-title>
+        <mat-card-subtitle>Complejidad: {{ algorithm.complexity }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ algorithm.description }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          routerLink="/loading"
+          class="execute-button"
+        >
+          Ejecutar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
