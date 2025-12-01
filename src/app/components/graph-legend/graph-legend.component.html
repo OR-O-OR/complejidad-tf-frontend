@@ -1,0 +1,39 @@
+<div class="legend-container">
+  <div class="legend-header">
+    <mat-icon>palette</mat-icon>
+    <h4>
+      Escala de Centralidad
+      <span *ngIf="algorithmName"> - {{ algorithmName }}</span>
+    </h4>
+  </div>
+  
+  <div class="color-scale">
+    <div class="scale-bar"></div>
+    <div class="scale-labels">
+      <span class="label-start">Baja</span>
+      <span class="label-middle">Media</span>
+      <span class="label-end">Alta</span>
+    </div>
+  </div>
+
+  <div class="legend-info">
+    <div class="info-item">
+      <div class="color-dot low"></div>
+      <span>Baja centralidad (nodos periféricos)</span>
+    </div>
+    <div class="info-item">
+      <div class="color-dot medium"></div>
+      <span>Media centralidad (nodos conectores)</span>
+    </div>
+    <div class="info-item">
+      <div class="color-dot high"></div>
+      <span>Alta centralidad (nodos puente clave)</span>
+    </div>
+  </div>
+
+  <div class="range-info">
+    <mat-icon>info</mat-icon>
+    <span>Rango: {{ centralityRange }}</span>
+  </div>
+</div>
+

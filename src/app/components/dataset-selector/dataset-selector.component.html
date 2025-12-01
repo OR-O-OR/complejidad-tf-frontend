@@ -1,0 +1,50 @@
+<mat-card class="dataset-card">
+  <mat-card-header>
+    <mat-icon mat-card-avatar>dataset</mat-icon>
+    <mat-card-title>Dataset Seleccionado</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (loading) {
+      <div class="loading-state">
+        <mat-spinner diameter="30"></mat-spinner>
+        <span>Cargando datasets...</span>
+      </div>
+    }
+
+    @if (error && !loading) {
+      <div class="error-state">
+        <mat-icon>error</mat-icon>
+        <span>{{ error }}</span>
+      </div>
+    }
+
+    @if (selectedDataset && !loading) {
+      <div class="dataset-info">
+        <div class="dataset-header">
+          <h3>{{ selectedDataset.name }}</h3>
+          <mat-chip-set>
+            <mat-chip [highlighted]="selectedDataset.available">
+              @if (selectedDataset.available) {
+                <mat-icon>check_circle</mat-icon> Disponible
+              } @else {
+                <mat-icon>cancel</mat-icon> No disponible
+              }
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+        <p class="dataset-description">{{ selectedDataset.description }}</p>
+        <div class="dataset-stats">
+          <div class="stat-item">
+            <mat-icon>account_tree</mat-icon>
+            <span>{{ selectedDataset.full_node_count.toLocaleString() }} nodos totales</span>
+          </div>
+          <div class="stat-item">
+            <mat-icon>share</mat-icon>
+            <span>{{ selectedDataset.full_edge_count.toLocaleString() }} aristas totales</span>
+          </div>
+        </div>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>
+

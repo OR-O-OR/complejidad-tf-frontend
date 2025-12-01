@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
+import { NodeCentrality } from '../../models/api.models';
 
-export interface NodeData {
+export interface NodeTableData {
   rank: number;
-  node: string;
+  node: number;
   centrality: number;
 }
 
@@ -15,26 +16,21 @@ export interface NodeData {
   templateUrl: './top-nodes-table.component.html',
   styleUrl: './top-nodes-table.component.scss'
 })
-export class TopNodesTableComponent implements OnInit {
-  @Input() dataSource: NodeData[] = [];
+export class TopNodesTableComponent implements OnChanges {
+  @Input() nodes: NodeCentrality[] = [];
+  @Input() algorithmName: string = 'Algorithm';
+  @Input() algorithmColor: string = '#1976d2';
   
+  dataSource: NodeTableData[] = [];
   displayedColumns: string[] = ['rank', 'node', 'centrality'];
 
-  // Datos de ejemplo para demostración
-  ngOnInit(): void {
-    if (this.dataSource.length === 0) {
-      this.dataSource = [
-        { rank: 1, node: 'Nodo 1', centrality: 0.014 },
-        { rank: 2, node: 'Nodo 2', centrality: 0.012 },
-        { rank: 3, node: 'Nodo 3', centrality: 0.010 },
-        { rank: 4, node: 'Nodo 4', centrality: 0.008 },
-        { rank: 5, node: 'Nodo 5', centrality: 0.006 },
-        { rank: 6, node: 'Nodo 6', centrality: 0.005 },
-        { rank: 7, node: 'Nodo 7', centrality: 0.004 },
-        { rank: 8, node: 'Nodo 8', centrality: 0.003 },
-        { rank: 9, node: 'Nodo 9', centrality: 0.002 },
-        { rank: 10, node: 'Nodo 10', centrality: 0.001 }
-      ];
+  ngOnChanges(): void {
+    if (this.nodes && this.nodes.length > 0) {
+      this.dataSource = this.nodes.map((node, index) => ({
+        rank: index + 1,
+        node: node.node_id,
+        centrality: node.centrality_score
+      }));
     }
   }
 }

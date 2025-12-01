@@ -1,0 +1,98 @@
+.chart-card {
+  mat-card-header {
+    mat-icon[mat-card-avatar] {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: #1976d2;
+    }
+  }
+}
+
+.chart-container {
+  padding: 2rem 1rem;
+}
+
+.chart {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  gap: 3rem;
+  height: 300px;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e0e0e0;
+  }
+}
+
+.bar-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 150px;
+
+  .bar {
+    width: 100%;
+    min-height: 30px;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 1rem;
+
+    &.brandes {
+      background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    &.floyd {
+      background: linear-gradient(180deg, #f093fb 0%, #f5576c 100%);
+      box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+    }
+
+    .bar-label {
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .bar-name {
+    margin-top: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .complexity {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 0.25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .chart {
+    gap: 1.5rem;
+  }
+
+  .bar-container {
+    max-width: 100px;
+
+    .bar .bar-label {
+      font-size: 0.875rem;
+    }
+  }
+}
+

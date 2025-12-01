@@ -1,36 +1,133 @@
 <app-navbar></app-navbar>
 
 <div class="container">
-  <h1 class="page-title">Resultados del Análisis</h1>
-  
-  <div class="results-grid">
-    <div class="table-section">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Top 10 Nodos Centrales</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <app-top-nodes-table></app-top-nodes-table>
-        </mat-card-content>
-      </mat-card>
+  @if (comparisonData) {
+    <div class="header-section">
+      <h1 class="page-title">Resultados de la Comparación</h1>
+      <p class="subtitle">
+        Análisis completo de Brandes vs Floyd-Warshall
+      </p>
     </div>
-    
-    <div class="graph-section">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Visualización del Grafo</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <app-graph-preview></app-graph-preview>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  </div>
-  
-  <div class="export-section">
-    <button mat-raised-button color="primary" (click)="exportCSV()">
-      Exportar CSV
-    </button>
-  </div>
-</div>
 
+    <!-- Performance Metrics -->
+    <app-comparison-metrics [comparisonData]="comparisonData"></app-comparison-metrics>
+
+    <!-- Performance Chart -->
+    <app-performance-chart 
+      [brandesTime]="comparisonData.brandes_result.execution_time_ms"
+      [floydWarshallTime]="comparisonData.floyd_warshall_result.execution_time_ms">
+    </app-performance-chart>
+
+    <!-- Graph Visualizations with Centrality -->
+    <div class="visualizations-section">
+      <h2 class="section-title">
+        <mat-icon>account_tree</mat-icon>
+        Visualizaciones del Grafo con Centralidad
+      </h2>
+      
+      <mat-tab-group animationDuration="300ms" class="viz-tabs">
+        <!-- Brandes Tab -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>trending_up</mat-icon>
+            Brandes (Óptimo)
+          </ng-template>
+          <div class="tab-content">
+            <app-graph-legend 
+              [minCentrality]="brandesVizData?.min_centrality || 0"
+              [maxCentrality]="brandesVizData?.max_centrality || 1"
+              [algorithmName]="'Brandes'">
+            </app-graph-legend>
+            <app-graph-preview 
+              [graphData]="brandesVizData || undefined"
+              [loading]="loadingBrandes"
+              [title]="'Grafo con Centralidad - Algoritmo de Brandes'">
+            </app-graph-preview>
+          </div>
+        </mat-tab>
+
+        <!-- Floyd-Warshall Tab -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>timeline</mat-icon>
+            Floyd-Warshall (Baseline)
+          </ng-template>
+          <div class="tab-content">
+            <app-graph-legend 
+              [minCentrality]="floydVizData?.min_centrality || 0"
+              [maxCentrality]="floydVizData?.max_centrality || 1"
+              [algorithmName]="'Floyd-Warshall'">
+            </app-graph-legend>
+            <app-graph-preview 
+              [graphData]="floydVizData || undefined"
+              [loading]="loadingFloyd"
+              [title]="'Grafo con Centralidad - Algoritmo de Floyd-Warshall'">
+            </app-graph-preview>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+
+    <!-- Top Nodes Comparison -->
+    <div class="tables-section">
+      <h2 class="section-title">
+        <mat-icon>leaderboard</mat-icon>
+        Top 10 Nodos con Mayor Centralidad
+      </h2>
+      <div class="tables-grid">
+        <mat-card class="table-card brandes-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>functions</mat-icon>
+            <mat-card-title>Brandes O(V·E)</mat-card-title>
+            <mat-card-subtitle>
+              Tiempo: {{ comparisonData.brandes_result.execution_time_ms.toFixed(2) }} ms
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <app-top-nodes-table 
+              [nodes]="comparisonData.brandes_result.top_k_nodes"
+              [algorithmName]="'Brandes'"
+              [algorithmColor]="'#667eea'">
+            </app-top-nodes-table>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="table-card floyd-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>functions</mat-icon>
+            <mat-card-title>Floyd-Warshall O(V³)</mat-card-title>
+            <mat-card-subtitle>
+              Tiempo: {{ comparisonData.floyd_warshall_result.execution_time_ms.toFixed(2) }} ms
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <app-top-nodes-table 
+              [nodes]="comparisonData.floyd_warshall_result.top_k_nodes"
+              [algorithmName]="'Floyd-Warshall'"
+              [algorithmColor]="'#f5576c'">
+            </app-top-nodes-table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions-section">
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="exportCSV()"
+        class="action-button">
+        <mat-icon>download</mat-icon>
+        Exportar a CSV
+      </button>
+      <button 
+        mat-raised-button 
+        (click)="newComparison()"
+        class="action-button">
+        <mat-icon>refresh</mat-icon>
+        Nueva Comparación
+      </button>
+    </div>
+  }
+</div>

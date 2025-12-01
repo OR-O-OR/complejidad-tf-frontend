@@ -1,9 +1,30 @@
-<mat-toolbar color="primary">
-  <span class="title">Centralidad App</span>
-  <span class="spacer"></span>
-  <button mat-button routerLink="/" routerLinkActive="active">Dataset</button>
-  <button mat-button routerLink="/config" routerLinkActive="active">Configuración</button>
-  <button mat-button routerLink="/results" routerLinkActive="active">Resultados</button>
-  <button mat-button routerLink="/graph" routerLinkActive="active">Grafo</button>
+<mat-toolbar color="primary" class="navbar">
+  <div class="navbar-content">
+    <div class="brand" routerLink="/">
+      <mat-icon>hub</mat-icon>
+      <span class="title">Betweenness Centrality</span>
+    </div>
+    
+    <span class="spacer"></span>
+    
+    @if (graphInfo) {
+      <div class="graph-status">
+        <mat-icon>storage</mat-icon>
+        <span>{{ graphInfo.node_count }} nodos, {{ graphInfo.edge_count }} aristas</span>
+      </div>
+    }
+    
+    <div class="nav-links">
+      <button mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon>home</mat-icon>
+        Inicio
+      </button>
+      @if (hasResults) {
+        <button mat-button routerLink="/results" routerLinkActive="active">
+          <mat-icon>assessment</mat-icon>
+          Resultados
+        </button>
+      }
+    </div>
+  </div>
 </mat-toolbar>
-

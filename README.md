@@ -1,59 +1,114 @@
-# CentralidadApp
+# Betweenness Centrality Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
+Frontend Angular application for comparing Brandes and Floyd-Warshall algorithms for betweenness centrality calculation.
 
-## Development server
+## 🚀 Quick Start
 
-To start a local development server, run:
+### Prerequisites
 
-```bash
-ng serve
-```
+- Node.js 18+ 
+- npm or yarn
+- Backend API running on http://localhost:8000
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Installation
 
 ```bash
-ng generate component component-name
+# Install dependencies
+npm install
+
+# Start development server
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The application will be available at **http://localhost:4200**
+
+## 📱 Application Flow
+
+1. **Dashboard** (`/`) - View dataset information and start comparison
+2. **Loading** (`/loading`) - Algorithms execute in backend
+3. **Results** (`/results`) - View comparison results, metrics, and visualizations
+
+## 🏗️ Project Structure
+
+```
+src/
+├── app/
+│   ├── components/          # Reusable components
+│   │   ├── comparison-metrics/
+│   │   ├── performance-chart/
+│   │   ├── top-nodes-table/
+│   │   ├── graph-preview/
+│   │   └── navbar/
+│   ├── pages/              # Page components
+│   │   ├── upload-dataset/ (Dashboard)
+│   │   ├── loading/
+│   │   └── results/
+│   ├── services/           # Services
+│   │   ├── betweenness-api.service.ts
+│   │   └── graph.service.ts
+│   ├── models/             # TypeScript interfaces
+│   │   └── api.models.ts
+│   └── app.routes.ts       # Route configuration
+├── environments/           # Environment configs
+└── styles.scss            # Global styles
+```
+
+## 🔌 API Integration
+
+The frontend connects to the FastAPI backend at `http://localhost:8000/api`
+
+**Main endpoints used:**
+- `GET /api/betweenness/graph/info` - Get graph metadata
+- `POST /api/betweenness/compare` - Run both algorithms
+
+## 🎨 Features
+
+- ✅ Real-time algorithm comparison
+- ✅ Performance metrics visualization
+- ✅ Top K nodes display
+- ✅ Graph visualization (static image)
+- ✅ CSV export functionality
+- ✅ Responsive design
+- ✅ Error handling with retry
+
+## 🛠️ Development
 
 ```bash
-ng generate --help
+# Development server
+npm start
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
 ```
 
-## Building
+## 📦 Technologies
 
-To build the project run:
+- **Angular 20** - Framework
+- **Angular Material** - UI Components
+- **RxJS** - Reactive programming
+- **TypeScript** - Type safety
 
-```bash
-ng build
+## 🔧 Configuration
+
+Update API URL in `src/environments/environment.ts`:
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8000',
+  apiPrefix: '/api'
+};
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 📝 Notes
 
-## Running unit tests
+- Ensure backend is running before starting frontend
+- Default dataset is pre-loaded in backend (SNAP ca-GrQc)
+- Results are cached in GraphService for navigation
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Part of:** Betweenness Centrality Comparison Project

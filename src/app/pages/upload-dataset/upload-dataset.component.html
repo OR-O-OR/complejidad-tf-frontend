@@ -1,40 +1,152 @@
 <app-navbar></app-navbar>
 
 <div class="container">
-  <mat-card class="upload-card">
-    <mat-card-header>
-      <mat-card-title>Cargar Dataset</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="upload-section">
-        <app-file-uploader></app-file-uploader>
-      </div>
-      
-      <div class="config-section">
-        <mat-form-field appearance="outline">
-          <mat-label>Número de nodos</mat-label>
-          <input 
-            matInput 
-            type="number" 
-            [(ngModel)]="nodeCount" 
-            [max]="maxNodes"
-            [min]="1"
-            placeholder="Ingrese número de nodos"
-          />
-          <mat-hint>Máximo: {{ maxNodes }} nodos</mat-hint>
-        </mat-form-field>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button 
-        mat-raised-button 
-        color="primary" 
-        class="generate-button"
-        routerLink="/config"
-      >
-        Generar Subgrafo
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+  <div class="hero-section">
+    <h1 class="page-title">Comparación de Algoritmos de Centralidad de Intermediación</h1>
+    <p class="subtitle">
+      Análisis de rendimiento: Brandes O(V·E) vs Floyd-Warshall O(V³)
+    </p>
+  </div>
 
+  <!-- Error Message -->
+  @if (error) {
+    <mat-card class="error-card">
+      <mat-card-content>
+        <div class="error-content">
+          <mat-icon color="warn">error</mat-icon>
+          <div>
+            <h3>Error al cargar datos</h3>
+            <p>{{ error }}</p>
+            <button mat-raised-button color="primary" (click)="retry()">
+              Reintentar
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Loading -->
+  @if (loading) {
+    <mat-card class="loading-card">
+      <mat-card-content>
+        <div class="loading-content">
+          <mat-spinner diameter="50"></mat-spinner>
+          <p>Cargando información del dataset...</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Main Content -->
+  @if (graphInfo && !loading) {
+    <!-- Dataset Selector -->
+    <app-dataset-selector></app-dataset-selector>
+
+    <!-- Subgraph Configuration -->
+    <app-subgraph-config (configUpdated)="onConfigUpdated()"></app-subgraph-config>
+
+    <!-- Graph Info Card -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>storage</mat-icon>
+        <mat-card-title>Información del Subgrafo Actual</mat-card-title>
+        <mat-card-subtitle>{{ graphInfo.source }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stats-grid">
+          <div class="stat">
+            <mat-icon>hub</mat-icon>
+            <div>
+              <span class="stat-value">{{ graphInfo.node_count }}</span>
+              <span class="stat-label">Nodos</span>
+            </div>
+          </div>
+          <div class="stat">
+            <mat-icon>timeline</mat-icon>
+            <div>
+              <span class="stat-value">{{ graphInfo.edge_count }}</span>
+              <span class="stat-label">Aristas</span>
+            </div>
+          </div>
+          <div class="stat">
+            <mat-icon>percent</mat-icon>
+            <div>
+              <span class="stat-value">{{ (graphInfo.density * 100).toFixed(4) }}%</span>
+              <span class="stat-label">Densidad</span>
+            </div>
+          </div>
+          <div class="stat">
+            <mat-icon>show_chart</mat-icon>
+            <div>
+              <span class="stat-value">{{ graphInfo.average_degree.toFixed(2) }}</span>
+              <span class="stat-label">Grado Promedio</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Graph Visualization -->
+    <app-graph-preview 
+      [graphData]="graphVizData || undefined"
+      [loading]="loadingViz"
+      [title]="'Visualización del Subgrafo a Analizar'"
+    ></app-graph-preview>
+
+    <!-- Algorithms Info -->
+    <mat-card class="algorithms-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>functions</mat-icon>
+        <mat-card-title>Algoritmos a Comparar</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="algorithm-info">
+          <div class="algorithm">
+            <h3>Brandes (Óptimo)</h3>
+            <p class="complexity">Complejidad: <strong>O(V · E)</strong></p>
+            <p class="description">
+              Algoritmo optimizado basado en BFS para calcular centralidad de intermediación.
+              Eficiente para grafos sparse.
+            </p>
+          </div>
+          <div class="divider"></div>
+          <div class="algorithm">
+            <h3>Floyd-Warshall (Baseline)</h3>
+            <p class="complexity">Complejidad: <strong>O(V³)</strong></p>
+            <p class="description">
+              Programación dinámica para encontrar todos los caminos más cortos.
+              Usado como punto de referencia.
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Action Button -->
+    <div class="action-section">
+      <mat-card class="action-card">
+        <mat-card-content>
+          <div class="action-content">
+            <div class="action-text">
+              <h2>¿Listo para comparar?</h2>
+              <p>
+                Se ejecutarán ambos algoritmos sobre el subgrafo configurado y se medirá su rendimiento.
+                El proceso puede tomar algunos segundos.
+              </p>
+            </div>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              class="start-button"
+              (click)="startComparison()"
+            >
+              <mat-icon>play_arrow</mat-icon>
+              Ejecutar Comparación
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</div>

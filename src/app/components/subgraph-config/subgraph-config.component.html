@@ -1,0 +1,79 @@
+<mat-card class="config-card">
+  <mat-card-header>
+    <mat-icon mat-card-avatar>tune</mat-icon>
+    <mat-card-title>Configuración del Subgrafo</mat-card-title>
+    <mat-card-subtitle>
+      Actual: {{ currentNodeCount }} nodos, {{ currentEdgeCount }} aristas
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    @if (error) {
+      <div class="error-message">
+        <mat-icon>error</mat-icon>
+        <span>{{ error }}</span>
+      </div>
+    }
+
+    <div class="config-form">
+      <div class="input-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Mínimo de nodos</mat-label>
+          <input 
+            matInput 
+            type="number" 
+            [(ngModel)]="minNodes"
+            [min]="100"
+            [max]="5000"
+            [disabled]="loading"
+          />
+          <mat-hint>Mínimo: 100</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Máximo de nodos</mat-label>
+          <input 
+            matInput 
+            type="number" 
+            [(ngModel)]="maxNodes"
+            [min]="100"
+            [max]="5000"
+            [disabled]="loading"
+          />
+          <mat-hint>Máximo: 5000</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="info-text">
+        <mat-icon>info</mat-icon>
+        <p>
+          El subgrafo se extraerá usando BFS desde un nodo de alto grado.
+          Cambiar estos valores regenerará el subgrafo y afectará las próximas comparaciones.
+        </p>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="applyConfig()"
+      [disabled]="loading"
+    >
+      @if (loading) {
+        <mat-spinner diameter="20"></mat-spinner>
+      } @else {
+        <mat-icon>refresh</mat-icon>
+      }
+      Aplicar Configuración
+    </button>
+    <button 
+      mat-button 
+      (click)="resetDefaults()"
+      [disabled]="loading"
+    >
+      <mat-icon>restore</mat-icon>
+      Valores por Defecto
+    </button>
+  </mat-card-actions>
+</mat-card>
+
